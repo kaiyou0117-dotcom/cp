@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPまとめ｜共同メモ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2f1f6;
+    --surface:#ffffff;
+    --ink:#23222b;
+    --muted:#6f6e7c;
+    --line:#e4e2ec;
+    --rose:#cf4a70;      /* キャラA */
+    --teal:#168f8a;      /* キャラB */
+    --rose-soft:#fbe9ef;
+    --teal-soft:#e2f2f1;
+    --shadow:0 1px 2px rgba(30,20,40,.04), 0 8px 24px rgba(30,20,40,.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Zen Kaku Gothic New", system-ui, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 96px;}
+
+  /* ---- header ---- */
+  header{margin-bottom:28px;}
+  .eyebrow{
+    font-size:12px;letter-spacing:.28em;color:var(--muted);
+    text-transform:uppercase;margin:0 0 6px;
+  }
+  h1{
+    font-family:"Shippori Mincho", serif;
+    font-weight:700;font-size:30px;letter-spacing:.02em;
+    margin:0 0 8px;line-height:1.3;
+  }
+  h1 .x{color:var(--muted);font-weight:500;padding:0 .1em;}
+  .lead{color:var(--muted);font-size:14px;margin:0;max-width:52ch;}
+
+  /* ---- add form ---- */
+  .card{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);
+  }
+  .composer{padding:20px;margin-bottom:24px;}
+  .composer h2{
+    font-family:"Shippori Mincho", serif;font-size:15px;font-weight:500;
+    margin:0 0 14px;color:var(--ink);
+  }
+  .pair-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .pair-row .times{
+    font-family:"Shippori Mincho", serif;font-size:22px;color:var(--muted);
+    flex:0 0 auto;
+  }
+  input, textarea{
+    font-family:inherit;font-size:15px;color:var(--ink);
+    width:100%;background:#fbfbfd;border:1px solid var(--line);
+    border-radius:9px;padding:11px 12px;transition:border-color .15s, box-shadow .15s;
+  }
+  input:focus, textarea:focus{
+    outline:none;border-color:var(--rose);
+    box-shadow:0 0 0 3px var(--rose-soft);
+  }
+  #charA{border-color:var(--line);}
+  #charA:focus{border-color:var(--rose);box-shadow:0 0 0 3px var(--rose-soft);}
+  #charB:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft);}
+  textarea{resize:vertical;min-height:74px;margin-bottom:12px;}
+  .composer-foot{display:flex;justify-content:flex-end;}
+  .btn{
+    font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.02em;
+    cursor:pointer;border:none;border-radius:9px;padding:11px 20px;
+    background:var(--rose);color:#fff;transition:filter .15s, transform .05s;
+    flex:0 0 auto;
+  }
+  .btn:hover{filter:brightness(1.05);}
+  .btn:active{transform:translateY(1px);}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  /* ---- toolbar ---- */
+  .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+  .search{flex:1 1 220px;position:relative;min-width:0;}
+  .search input{padding-left:36px;background:var(--surface);}
+  .search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:15px;height:15px;stroke:var(--muted);}
+  .count{font-size:13px;color:var(--muted);flex:0 0 auto;}
+
+  /* ---- list ---- */
+  .list{display:flex;flex-direction:column;gap:12px;}
+  .entry{padding:16px 18px;}
+  .entry-head{
+    font-family:"Shippori Mincho", serif;font-size:19px;font-weight:500;
+    line-height:1.4;display:flex;align-items:baseline;gap:.4em;flex-wrap:wrap;
+  }
+  .entry-head .a{color:var(--rose);}
+  .entry-head .b{color:var(--teal);}
+  .entry-head .x{color:var(--muted);font-size:.85em;}
+  .entry-note{margin:8px 0 0;font-size:14.5px;white-space:pre-wrap;word-break:break-word;}
+  .entry-note.empty{color:var(--muted);font-style:italic;}
+  .entry-foot{
+    display:flex;align-items:center;gap:12px;margin-top:12px;
+    font-size:12px;color:var(--muted);
+  }
+  .entry-foot .who{flex:1 1 auto;}
+  .entry-foot .who b{color:var(--ink);font-weight:500;}
+  .link{
+    font-family:inherit;font-size:12px;color:var(--muted);background:none;
+    border:none;cursor:pointer;padding:2px 4px;border-radius:6px;
+  }
+  .link:hover{color:var(--ink);background:var(--bg);}
+  .link.danger:hover{color:var(--rose);}
+
+  /* ---- states ---- */
+  .state{
+    text-align:center;padding:48px 20px;color:var(--muted);
+    border:1px dashed var(--line);border-radius:var(--radius);font-size:14px;
+  }
+  .state.error{color:#b23b3b;border-color:#f0cdcd;background:#fdf3f3;}
+
+  /* ---- edit mode ---- */
+  .entry.editing .display{display:none;}
+  .edit-form{display:none;}
+  .entry.editing .edit-form{display:block;}
+  .edit-form .pair-row{margin-bottom:10px;}
+  .edit-form textarea{margin-bottom:10px;}
+  .edit-actions{display:flex;gap:8px;}
+  .btn-sm{padding:8px 16px;font-size:13px;}
+  .btn-ghost{background:var(--bg);color:var(--muted);}
+  .btn-ghost:hover{filter:none;background:var(--line);}
+
+  footer{margin-top:40px;text-align:center;font-size:12px;color:var(--muted);}
+
+  @media (max-width:520px){
+    .pair-row{flex-direction:column;align-items:stretch;gap:8px;}
+    .pair-row .times{align-self:center;}
+    h1{font-size:24px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Roleplay Chat &middot; Couplings</p>
+    <h1>CP<span class="x">×</span>まとめメモ</h1>
+    <p class="lead">なりきりチャットのCPを、みんなで書き足していく共同の記録帳です。気づいた組み合わせを自由に追加・編集してください。</p>
+  </header>
+
+  <!-- 追加フォーム -->
+  <section class="card composer">
+    <h2>組み合わせを追加する</h2>
+    <div class="pair-row">
+      <input id="charA" type="text" placeholder="キャラ名（左）" maxlength="40" autocomplete="off">
+      <span class="times">×</span>
+      <input id="charB" type="text" placeholder="キャラ名（右）" maxlength="40" autocomplete="off">
+    </div>
+    <textarea id="note" placeholder="関係性・出典・補足など（任意）" maxlength="1000"></textarea>
+    <div class="composer-foot">
+      <button class="btn" id="addBtn">追加する</button>
+    </div>
+  </section>
+
+  <!-- 検索 -->
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg>
+      <input id="search" type="text" placeholder="キャラ名・メモで絞り込む" autocomplete="off">
+    </div>
+    <span class="count" id="count"></span>
+  </div>
+
+  <!-- 一覧 -->
+  <div id="list" class="list"></div>
+  <div id="stateBox"></div>
+
+  <footer>
+    共同編集メモ &middot; データは全員で共有されます
+  </footer>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, updateDoc, deleteDoc, doc,
+    onSnapshot, query, orderBy, serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+  // ── Firebase 設定（あなたのプロジェクト） ──────────────
+  const firebaseConfig = {
+    apiKey: "AIzaSyCXWbqvShpZqjPX_Ax0UkGXs4pSwhAncNU",
+    authDomain: "inou-cp.firebaseapp.com",
+    projectId: "inou-cp",
+    storageBucket: "inou-cp.firebasestorage.app",
+    messagingSenderId: "443781770016",
+    appId: "1:443781770016:web:c8f97742317433ba4c8545",
+    measurementId: "G-4ZQ58FJLG0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const col = collection(db, "pairings");
+
+  // ── DOM ────────────────────────────────────────────────
+  const $ = id => document.getElementById(id);
+  const charA = $("charA"), charB = $("charB"), note = $("note");
+  const addBtn = $("addBtn"), listEl = $("list"), stateBox = $("stateBox");
+  const searchEl = $("search"), countEl = $("count");
+
+  const esc = s => (s ?? "").replace(/[&<>"']/g, c =>
+    ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+  const fmtDate = ts => {
+    if (!ts?.toDate) return "";
+    const d = ts.toDate();
+    const p = n => String(n).padStart(2, "0");
+    return `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  };
+
+  let items = [];      // 全データ
+  let keyword = "";    // 検索語
+
+  // ── 追加 ───────────────────────────────────────────────
+  async function add() {
+    const a = charA.value.trim(), b = charB.value.trim();
+    if (!a || !b) { alert("キャラ名を2つとも入力してください。"); return; }
+    addBtn.disabled = true;
+    try {
+      await addDoc(col, {
+        charA: a, charB: b,
+        note: note.value.trim(),
+        createdAt: serverTimestamp()
+      });
+      charA.value = ""; charB.value = ""; note.value = "";
+      charA.focus();
+    } catch (e) {
+      console.error(e);
+      alert("追加に失敗しました。時間をおいて再度お試しください。");
+    } finally {
+      addBtn.disabled = false;
+    }
+  }
+  addBtn.addEventListener("click", add);
+  charB.addEventListener("keydown", e => { if (e.key === "Enter") add(); });
+
+  // ── 削除 ───────────────────────────────────────────────
+  async function remove(id) {
+    if (!confirm("この組み合わせを削除しますか？（全員から見えなくなります）")) return;
+    try { await deleteDoc(doc(db, "pairings", id)); }
+    catch (e) { console.error(e); alert("削除に失敗しました。"); }
+  }
+
+  // ── 編集 ───────────────────────────────────────────────
+  function startEdit(id) {
+    document.querySelector(`[data-id="${id}"]`)?.classList.add("editing");
+  }
+  function cancelEdit(id) {
+    document.querySelector(`[data-id="${id}"]`)?.classList.remove("editing");
+    render();
+  }
+  async function saveEdit(id) {
+    const row = document.querySelector(`[data-id="${id}"]`);
+    const a = row.querySelector(".ed-a").value.trim();
+    const b = row.querySelector(".ed-b").value.trim();
+    const n = row.querySelector(".ed-note").value.trim();
+    if (!a || !b) { alert("キャラ名を2つとも入力してください。"); return; }
+    try {
+      await updateDoc(doc(db, "pairings", id), { charA:a, charB:b, note:n });
+    } catch (e) { console.error(e); alert("更新に失敗しました。"); }
+  }
+
+  // イベント委任
+  listEl.addEventListener("click", e => {
+    const btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    const id = btn.closest(".entry").dataset.id;
+    const act = btn.dataset.act;
+    if (act === "del") remove(id);
+    else if (act === "edit") startEdit(id);
+    else if (act === "cancel") cancelEdit(id);
+    else if (act === "save") saveEdit(id);
+  });
+
+  // ── 描画 ───────────────────────────────────────────────
+  function render() {
+    const kw = keyword.toLowerCase();
+    const view = kw
+      ? items.filter(it =>
+          (it.charA + it.charB + (it.note||""))
+            .toLowerCase().includes(kw))
+      : items;
+
+    countEl.textContent = items.length
+      ? (kw ? `${view.length} / ${items.length} 件` : `${items.length} 件`)
+      : "";
+
+    if (!items.length) {
+      listEl.innerHTML = "";
+      stateBox.innerHTML = `<div class="state">まだ何も登録されていません。<br>最初の組み合わせを追加してみましょう。</div>`;
+      return;
+    }
+    if (!view.length) {
+      listEl.innerHTML = "";
+      stateBox.innerHTML = `<div class="state">「${esc(keyword)}」に一致する組み合わせはありませんでした。</div>`;
+      return;
+    }
+    stateBox.innerHTML = "";
+    listEl.innerHTML = view.map(it => `
+      <article class="entry card" data-id="${it.id}">
+        <div class="display">
+          <div class="entry-head">
+            <span class="a">${esc(it.charA)}</span>
+            <span class="x">×</span>
+            <span class="b">${esc(it.charB)}</span>
+          </div>
+          <p class="entry-note ${it.note ? "" : "empty"}">${it.note ? esc(it.note) : "（メモなし）"}</p>
+          <div class="entry-foot">
+            <span class="who">${fmtDate(it.createdAt)}</span>
+            <button class="link" data-act="edit">編集</button>
+            <button class="link danger" data-act="del">削除</button>
+          </div>
+        </div>
+        <div class="edit-form">
+          <div class="pair-row">
+            <input class="ed-a" type="text" value="${esc(it.charA)}" maxlength="40">
+            <span class="times">×</span>
+            <input class="ed-b" type="text" value="${esc(it.charB)}" maxlength="40">
+          </div>
+          <textarea class="ed-note" maxlength="1000">${esc(it.note||"")}</textarea>
+          <div class="edit-actions">
+            <button class="btn btn-sm" data-act="save">保存</button>
+            <button class="btn btn-sm btn-ghost" data-act="cancel">キャンセル</button>
+          </div>
+        </div>
+      </article>`).join("");
+  }
+
+  searchEl.addEventListener("input", () => { keyword = searchEl.value.trim(); render(); });
+
+  // ── リアルタイム購読 ───────────────────────────────────
+  stateBox.innerHTML = `<div class="state">読み込み中…</div>`;
+  onSnapshot(
+    query(col, orderBy("createdAt", "desc")),
+    snap => {
+      items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      render();
+    },
+    err => {
+      console.error(err);
+      stateBox.innerHTML = `<div class="state error">データを読み込めませんでした。<br>Firestoreの有効化とセキュリティルールを確認してください。</div>`;
+    }
+  );
+</script>
+</body>
+</html>
